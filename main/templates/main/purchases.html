@@ -11,19 +11,34 @@
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
   </head>
   <body>
+      <style media="screen">
+          .jumbotron{
+            text-align: center;
+          }
+          input{
+            border-radius: 10px;
+            border-style: solid;
+            border-color: silver;
+            border-width: 1px;
+    
+          }
+          .btn{
+            border-radius: 10px;
+          }
+        </style>
     <div class="jumbotron">
   <h1 class="display-4">Purchases</h1>
   <hr class="my-4">
   <!-- <form class="container" action="index.html" method="POST"> -->
-    <label class="label" for="pid">Purchase ID</label>
+    <label class="lead" for="pid">Purchase ID</label>
     <input class="box" id="pid" type="text" name="pur_id" value="" required pattern="[PR|SL][0-9][0-9][0-9]"><br><br>
-    <label for="iid" class="label">Item ID</label>
+    <label for="iid" class="lead">Item ID</label>
     <input id="iid" class="box" name="item_id"><br><br>
-    <label for="pcid" class="label">Customer ID</label>
+    <label for="pcid" class="lead">Customer ID</label>
     <input id="pcid" class="box" type="number" name="pur_cus_id" value=""><br><br>
-    <label for="pamt" class="label">Amount</label>
+    <label for="pamt" class="lead">Amount</label>
     <input id="pamt" class="box" type="number" name="pur_amt" value=""><br><br>
-    <label for="pdate" class="label">Date of Purchase</label>
+    <label for="pdate" class="lead">Date of Purchase</label>
     <input id="pdate" class="box" type="date" name="pur_date" value=""><br><br>
 
     <p class="lead">

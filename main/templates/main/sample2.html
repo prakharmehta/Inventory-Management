@@ -1,18 +1,46 @@
 <html>
 <head>
     <title>Table Updater</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/page1.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
 </head>
     <body>
+      <style media="screen">
+        .jumbotron{
+          text-align: center;
+        }
+        input{
+          border-radius: 10px;
+          border-style: solid;
+          border-color: silver;
+          border-width: 1px;
+
+        }
+        .btn{
+          border-radius: 10px;
+        }
+      </style>
+      <div class="jumbotron">
     <form>
-        Transaction Id <input type="text" required name="tid"><br><br>
-        Type <input type="text" required name="type"><br><br>
-        Item Id <input type="text" required name="iid"><br><br>
-        Transaction Customer Id <input type="text" required name="tcid"><br><br>
-        Transaction Amount <input type="text" required name="amount"><br><br>
-        Transaction Date <input type="text" required name="date"><br><br>
-        Bill Produced <input type="text" required name="bill"><br><br>
-        <button type="submit" value="submit">Submit</button>
-        <a class="btn-info" href="/sample">Click here to view the table!</a>
+
+
+<hr class="my-4">
+      <br>
+        <label class="lead">Transaction Id</label>             <input type="text" required name="tid"><br><br>
+        <label class="lead">Type </label>                      <input type="text" required name="type"><br><br>
+        <label class="lead">Item Id </label>                   <input type="text" required name="iid"><br><br>
+        <label class="lead">Transaction Customer Id</label>    <input type="text" required name="tcid"><br><br>
+        <label class="lead">ransaction Amount </label>         <input type="text" required name="amount"><br><br>
+        <label class="lead">Transaction Date</label>           <input type="text" required name="date"><br><br>
+        <label class="lead">Bill Produced </label>             <input type="text" required name="bill"><br><br>
+        <button class="btn btn-primary" type="submit" value="submit">Submit</button><br><br>
+        <a class="btn btn-info" href="/sample" role="button">View</a>
+
     </form>
+    </div>
 </body>
 </html>
