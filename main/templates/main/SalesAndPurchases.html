@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+  </head>
+      <body>
+
+    <br>
+    <br>
+    <div align="center">
+    <h1>Sales and Purchases Table</h1>
+        </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div align="center">
+    <table border="2" cellpadding="20">
+        <tr>
+            <th>
+                Transaction_Id
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Item_Id
+            </th>
+            <th>
+                Transaction_Customer_Id
+            </th>
+            <th>
+                Transaction_Amount
+            </th>
+            <th>
+                Transaction_Date
+            </th>
+            <th>
+                Bill_Produced
+            </th>
+
+        </tr>
+        {% for i, j in context.items %}
+         <tr align="center">
+            <td>{{i}}</td>
+             <td>{{j.type}}</td>
+             <td>{{j.item_id_id}}</td>
+             <td>{{j.transaction_cus_id}}</td>
+             <td>{{j.transaction_amt}}</td>
+             <td>{{j.transaction_date}}</td>
+             <td>{{j.bill_produced}}</td>
+         </tr>
+        {%endfor%}
+    </table>
+    </div>
+
+</body>
+</html>

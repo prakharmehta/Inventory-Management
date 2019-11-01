@@ -1,0 +1,9 @@
+.box{
+  border-radius: 5px;
+  border-style:  groove;
+  border-color: inherit;
+}
+
+.jumbotron{
+  text-align: center;
+}

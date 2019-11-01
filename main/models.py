@@ -48,6 +48,9 @@ class Inventory(models.Model):
     last_update = models.DateTimeField()
     item_description = models.CharField(max_length=30, blank=True)
 
+    def __str__(self):
+        return str(self.item_id)
+
 
 # Sales and Purchases can be merged
 TRANSACTIONS = (('S', 'Sales'), ('P', 'Purchases'))
@@ -62,6 +65,9 @@ class SalesAndPurchases(models.Model):
     transaction_date = models.DateField(auto_now_add=True)
     bill_produced = models.BooleanField(default=0)  # Converted this to a boolean field
 
+    def __str__(self):
+        return str(self.transaction_id)
+
 
 class Billing(models.Model):
     bill_id = models.UUIDField(default=uuid.uuid4, primary_key=True)
@@ -70,6 +76,9 @@ class Billing(models.Model):
     bill_total = models.FloatField()
     bill_date = models.DateField(auto_now_add=True)
     bill_status = models.CharField(max_length=30, default="Pending")
+
+    def __str__(self):
+        return str(self.bill_id)
 
 
 

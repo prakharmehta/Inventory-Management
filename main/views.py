@@ -3,7 +3,7 @@ from django.http import HttpResponse
 # Create your views here.
 from django.views import View
 
-from .models import CustomUser, Login
+from .models import CustomUser, Login, SalesAndPurchases
 
 
 # def home(request):
@@ -41,3 +41,25 @@ class Home(View):
                 return HttpResponse("Wrong password for the given username")
         else:
             return HttpResponse("User doesnt exist!")
+
+
+class SalesAndPurchasesTablePage(View):
+    def get(self, request):
+        queryset = SalesAndPurchases.objects.values()
+        context = {}
+        for i in queryset:
+            context.update({str(i['transaction_id']): i})
+        #print(context)
+        return render(request, 'main/SalesAndPurchases.html', {"context": context})
+
+
+class Purchases(View):
+    def get(self, request):
+        return render(request, 'main/purchases.html')
+
+
+class Sample2(View):
+    def get(self, request):
+        return render(request, 'main/sample2.html')
+
+

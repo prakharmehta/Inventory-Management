@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/static/css/page1.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="jumbotron">
+  <h1 class="display-4">Purchases</h1>
+  <hr class="my-4">
+  <!-- <form class="container" action="index.html" method="POST"> -->
+    <label class="label" for="pid">Purchase ID</label>
+    <input class="box" id="pid" type="text" name="pur_id" value="" required pattern="[PR|SL][0-9][0-9][0-9]"><br><br>
+    <label for="iid" class="label">Item ID</label>
+    <input id="iid" class="box" name="item_id"><br><br>
+    <label for="pcid" class="label">Customer ID</label>
+    <input id="pcid" class="box" type="number" name="pur_cus_id" value=""><br><br>
+    <label for="pamt" class="label">Amount</label>
+    <input id="pamt" class="box" type="number" name="pur_amt" value=""><br><br>
+    <label for="pdate" class="label">Date of Purchase</label>
+    <input id="pdate" class="box" type="date" name="pur_date" value=""><br><br>
+
+    <p class="lead">
+      <input class="btn btn-primary" type="submit" value="Submit">
+    </p>
+    <p class="lead">
+      <a id = "view" class="btn btn-info" href="#" role="button">View</a>
+    </p>
+<!-- </form> -->
+
+ <div style="display: none;" id = "table_display">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ITEM ID</th>
+        <th>SALE ID</th>
+        <th>AMOUNT</th>
+        <th>DATE</th>
+        <th>CUSTOMER ID</th>
+        <th>BILL GENERATED</th>
+      </tr>
+
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+
+</div>
+<!-- $('tbody').append(`<tr><td> ${$('#iid').val()} </td><td> ${$('#pid').val()} </td><td> ${$('#samt').val()} </td><td> ${$('#sdate').val()} </td><td> ${$('#scid').val()} </td><td> NO </td><tr>`); -->
+<script>
+    $('#view').click(()=>{
+      let data = {"table1": [[123,435,345,2019-10-09,65,'NO'],[123,435,3342343245,2019-10-09,65,'NO']]};
+      if($('#table_display').css('display') == 'none'){
+        $('#table_display').css('display', 'block');
+      }
+      for(var dataT in data){
+          for(var i = 0; i<data[dataT].length; i++){
+            let str = '';
+            for(var j = 0; j< data[dataT][i].length; j++){
+              str += `<td> ${data[dataT][i][j]} </td>`;
+            }
+            $('tbody').append(`<tr>${str}<tr>`);
+          }
+      }
+    });
+  </script>
+  </body>
+</html>
