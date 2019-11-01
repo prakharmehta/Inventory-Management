@@ -1,0 +1,65 @@
+body{
+   background-image:url(16849.jpg);
+
+   background-repeat:no-repeat;
+
+   background-size:cover;
+
+}
+
+.form-control{
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 50px;
+  filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.161));
+  height: 100px;
+  text-align: center;
+  width: 40%;
+
+}
+
+::placeholder {
+  font-size: 30px;
+  padding: 20px;
+  font-weight: lighter;
+}
+
+#sp{
+  text-align: center;
+	filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.161));
+	overflow: hidden;
+	font-family: Cocogoose Pro Letterpress;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 150px;
+	color: rgba(255,255,255,1);
+}
+
+#lg{
+  font-size: 20px;
+  border-radius: 50px;
+  font-weight: lighter;
+  font-family: COCOMAT;
+  filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.161));
+
+}
+
+#Username {
+  filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.161));
+	overflow: hidden;
+	font-family: COCOMAT;
+	font-style: normal;
+	font-weight: lighter;
+	font-size: 30px;
+	color: rgba(143,135,135,1);
+  position: relative;
+}
+
+#Password {
+  filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.161));
+	overflow: hidden;
+	font-family: COCOMAT;
+	font-style: normal;
+	font-weight: lighter;
+	font-size: 30px;
+	color: rgba(143,135,135,1);
+}
