@@ -10,10 +10,17 @@ from .models import (
 )
 
 
+class CustomDateInput(DateInput):
+    input_type = 'date'
+
+
 class CustomUserForm(ModelForm):
     class Meta:
         model = CustomUser
         fields = "__all__"
+        widgets = {
+            'dob': CustomDateInput()
+        }
 
 
 class RoleForm(ModelForm):
@@ -34,8 +41,6 @@ class PermissionForm(ModelForm):
         fields = "__all__"
 
 
-class CustomDateInput(DateInput):
-    input_type = 'date'
 
 
 class InventoryForm(ModelForm):

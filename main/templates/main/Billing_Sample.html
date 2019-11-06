@@ -26,29 +26,29 @@
       </style>
       <div class="jumbotron">
 
-
-    <br>
-    <br>
+        <div align="center">
+    <h1 class="display-4">Billing</h1>
+    </div>
     <br>
     <br>
     <div align="center">
     <form class="container" action="/billing/" method="post">
         {% csrf_token %}
         <label for="bill_id">Bill ID</label>
-    <input class="box" type="text" name="bill_id"><br><br>
+    <input class="box" type="text" required name="bill_id"><br><br>
     <label for="trans_id">Transaction ID</label>
-    <input class="box" type="text" name="trans_id"><br><br>
+    <input class="box" type="text" required name="trans_id"><br><br>
     <label for="item_id">Item ID</label>
-    <input class="box" type="text" name="item_id"><br><br>
+    <input class="box" type="text" required name="item_id"><br><br>
     <label for="date">Date</label>
-    <input class="box" type="date" name="date"><br><br>
+    <input class="box" type="date" required name="date"><br><br>
         <pre><label for="choice">Rejected</label>  <input type="checkbox" name="choice" value="True">Yes<pre>   (Please leave it blank to keep it on default for no)</pre><br></pre>
     <p class="lead">
       <input class="btn btn-primary" type="submit" value="Submit">
     </p>
 
     <p class="lead">
-      <a class="btn btn-info" href="#" role="button">View</a>
+      <a class="btn btn-info" href="/billingTable/" role="button">View</a>
     </p>
 
         <div style="color:red">
@@ -58,7 +58,45 @@
             {{context.messages3}}
         </div>
   </form>
+        <table class="table table-borderless table-dark table-hover" border="2" cellpadding="20">
+        <tr>
+            <th scope="col">
+                Transaction_Id
+            </th>
+            <th scope="col">
+                Type
+            </th>
+            <th scope="col">
+                Item_Id
+            </th>
+            <th scope="col">
+                Transaction_Customer_Id
+            </th>
+            <th scope="col">
+                Transaction_Amount
+            </th>
+            <th scope="col">
+                Transaction_Date
+            </th>
+            <th scope="col">
+                Bill_Produced
+            </th>
+
+        </tr>
+        {% for i, j in table.items %}
+         <tr align="center">
+            <th scope="row">{{i}}</th>
+             <td>{{j.type}}</td>
+             <td>{{j.item_id_id}}</td>
+             <td>{{j.transaction_cus_id}}</td>
+             <td>{{j.transaction_amt}}</td>
+             <td>{{j.transaction_date}}</td>
+             <td>{{j.bill_produced}}</td>
+         </tr>
+        {%endfor%}
+    </table>
         </div>
       </div>
+
 </body>
 </html>

@@ -25,12 +25,16 @@
         }
       </style>
       <div class="jumbotron">
+
+          <div align="center">
+    <h1 class="display-4">Purchases</h1>
+    </div>
     <form action="/sample2/" method="POST">
         {% csrf_token %}
 
 <hr class="my-4">
       <br>
-<!--        <label class="lead">Transaction Id</label>             <input type="text" required name="tid"><br><br>-->
+<label class="lead">Purchase Id</label>             <input type="text" required name="Purchase_id"><br><br>
 <!--        <label class="lead">Type </label>                      <input type="text" required name="type"><br><br>-->
         <label class="lead">Item Id </label>                   <input type="text" required name="item_id"><br><br>
         <label class="lead">Purchase Customer Id</label>    <input type="text" required name="pur_cus_id"><br><br>
@@ -38,8 +42,14 @@
         <label class="lead">Purchase Date</label>           <input type="text" required name="pur_date"><br><br>
 <!--        <label class="lead">Bill Produced </label>             <input type="text" required name="bill"><br><br>-->
         <button class="btn btn-primary" type="submit" value="submit">Submit</button><br><br>
-        <a class="btn btn-info" href="/sample?type=P" role="button">View</a>
-
+<!--        <a class="btn btn-info" href="/sample?type=P" role="button">View</a>-->
+    <p>
+            <div style="color:red">
+        {{context.messages1}}
+          {{context.messages2}}
+          {{context.messages3}}
+                 </div>
+        </p>
     </form>
           <table class="table table-borderless table-dark table-hover" border="2" cellpadding="20">
         <tr>

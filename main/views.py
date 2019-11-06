@@ -1,10 +1,11 @@
 import datetime
 
+import django
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
 from django.views import View
 from .tables import InventoryTable
-from .forms import InventoryForm
+from .forms import InventoryForm, CustomUserForm
 from .models import CustomUser, Login, SalesAndPurchases, Inventory, Billing
 
 
@@ -48,30 +49,34 @@ class SalesAndPurchasesTablePage(View):
         #print(context)
         return render(request, 'main/SalesAndPurchases.html', {"context": context})
 
-
-class Purchases(View):
-    def get(self, request):
-        return render(request, 'main/purchases.html')
-
     def post(self, request):
-        type = 'P'
-        item_id = Inventory.objects.filter(item_id=request.POST('item_id'))
-        transaction_customer_id = request.POST('pur_cus_id')
-        transaction_amt = request.POST('pur_amt')
-        transaction_date = request.POST('pur_date')
+        print(request.POST)
+        return HttpResponse("Edit Page Coming Soon")
 
-        try:
 
-            SalesAndPurchases.objects.create(type=type,
-                                             item_id=item_id,
-                                             transaction_customer_id=transaction_customer_id,
-                                             transaction_amt=transaction_amt,
-                                             transaction_date=transaction_date)
-        except Exception as e:
-            return HttpResponse("Error in adding to db")
-
-        # print(request.POST)
-        return HttpResponse("Successfully Added !")
+# class Purchases(View):
+#     def get(self, request):
+#         return render(request, 'main/purchases.html')
+#
+#     def post(self, request):
+#         type = 'P'
+#         item_id = Inventory.objects.filter(item_id=request.POST('item_id'))
+#         transaction_customer_id = request.POST('pur_cus_id')
+#         transaction_amt = request.POST('pur_amt')
+#         transaction_date = request.POST('pur_date')
+#
+#         try:
+#
+#             SalesAndPurchases.objects.create(type=type,
+#                                              item_id=item_id,
+#                                              transaction_customer_id=transaction_customer_id,
+#                                              transaction_amt=transaction_amt,
+#                                              transaction_date=transaction_date)
+#         except Exception as e:
+#             return HttpResponse("Error in adding to db")
+#
+#         # print(request.POST)
+#         return HttpResponse("Successfully Added !")
 
 
 class Sample2(View):
@@ -84,9 +89,9 @@ class Sample2(View):
         return render(request, 'main/sample2.html', {"table": table})
 
     def post(self, request):
-        queryset = SalesAndPurchases.objects.filter(type='P').values()
-        table = {}
         context = {}
+        table = {}
+        queryset = SalesAndPurchases.objects.filter(type='P').values()
         for i in queryset:
             table.update({str(i['transaction_id']): i})
         type = 'P'
@@ -95,32 +100,73 @@ class Sample2(View):
         if not item_id:
             context.update({"messages1": "No good by this item id exists in the inventory"})
             return render(request, 'main/sample2.html', {"context": context, "table": table})
+
         transaction_customer_id = request.POST['pur_cus_id']
         transaction_amt = request.POST['pur_amt']
         transaction_date = request.POST['pur_date']
+        transaction_id = request.POST['Purchase_id']
+
+        try:
+            SalesAndPurchases.objects.get(transaction_id=transaction_id)
+            context = {}
+            table = {}
+            queryset = SalesAndPurchases.objects.filter(type='P').values()
+            for i in queryset:
+                table.update({str(i['transaction_id']): i})
+            context.update({"messages2": "Purchase already exists"})
+            return render(request, 'main/sample2.html', {"context": context, "table": table})
+
+        except Exception as e:
+            print(e)
+            pass
+
+        try:
+            transaction_amt = int(transaction_amt)
+        except ValueError:
+            context = {}
+            table = {}
+            queryset = SalesAndPurchases.objects.filter(type='P').values()
+            for i in queryset:
+                table.update({str(i['transaction_id']): i})
+            context.update({"messages2": "transaction_amt is not an integer"})
+            return render(request, 'main/sample2.html', {"context": context, "table": table})
 
         try:
 
-            SalesAndPurchases.objects.create(type=type,
+            SalesAndPurchases.objects.create(transaction_id=transaction_id, type=type,
                                              item_id=item_id[0],
                                              transaction_cus_id=transaction_customer_id,
                                              transaction_amt=transaction_amt,
                                              transaction_date=transaction_date)
+
+            table = {}
+            queryset = SalesAndPurchases.objects.filter(type='P').values()
+            for i in queryset:
+                table.update({str(i['transaction_id']): i})
+            context.update({"messages2": "Successfully Added to Database"})
+            return render(request, 'main/sample2.html', {"context": context, "table": table})
         except Exception as e:
             print(e)
-            context.update({"messages2": "Error in adding to the database"})
+            table = {}
+            queryset = SalesAndPurchases.objects.filter(type='P').values()
+            for i in queryset:
+                table.update({str(i['transaction_id']): i})
+            context.update({"messages2": "Error in adding to the database, check date format once"})
             return render(request, 'main/sample2.html', {"context": context, "table": table})
 
         # print(request.POST)
-        context.update({"messages2": "Successfully Added to Database"})
-        return render(request, 'main/sample2.html', {"context": context, "table": table})
 
 
 class Sample3(View):
 
     # Sales VIew
     def get(self, request):
-        return render(request, 'main/Sales_Sample.html')
+        context = {}
+        table = {}
+        queryset = SalesAndPurchases.objects.filter(type='S').values()
+        for i in queryset:
+            table.update({str(i['transaction_id']): i})
+        return render(request, 'main/Sales_Sample.html', {"context": context, "table": table})
 
     def post(self, request):
         type = 'S'
@@ -128,34 +174,70 @@ class Sample3(View):
         print(request.POST)
         item_id = Inventory.objects.filter(item_id=request.POST['item_id'])
         if not item_id:
-            return HttpResponse("No good by this item id exists in the inventory")
+            context = {}
+            table = {}
+            context.update({"messages1": "No good by this item id exists in the inventory"})
+            queryset = SalesAndPurchases.objects.filter(type='S').values()
+            for i in queryset:
+                table.update({str(i['transaction_id']): i})
+            return render(request, 'main/Sales_Sample.html', {"context": context, "table": table})
         # In case items are not in db, and user mistakenly puts an invalid item id
 
         transaction_customer_id = request.POST['pur_cus_id']
         transaction_amt = request.POST['pur_amt']
         transaction_date = request.POST['pur_date']
+        transaction_id = request.POST['Sales_id']
 
         try:
-            check = float(transaction_amt)
-        except ValueError as e:
-            print("Referenced")
-            context = {"messages1": e}
-            return render(request, 'main/Sales_Sample.html', {"context": context})
+            SalesAndPurchases.objects.get(transaction_id=transaction_id)
+            context = {}
+            table = {}
+            queryset = SalesAndPurchases.objects.filter(type='S').values()
+            for i in queryset:
+                table.update({str(i['transaction_id']): i})
+            context.update({"messages2": "Sales already exists"})
+            return render(request, 'main/Sales_Sample.html', {"context": context, "table": table})
+
+        except Exception as e:
+            print(e)
+            pass
+
+        try:
+            transaction_amt = int(transaction_amt)
+        except ValueError:
+            context = {}
+            table = {}
+            queryset = SalesAndPurchases.objects.filter(type='S').values()
+            for i in queryset:
+                table.update({str(i['transaction_id']): i})
+            context.update({"messages2": "transaction_amt is not an integer"})
+            return render(request, 'main/Sales_Sample.html', {"context": context, "table": table})
 
         try:
 
-            SalesAndPurchases.objects.create(type=type,
+            SalesAndPurchases.objects.create(transaction_id= transaction_id, type=type,
                                              item_id=item_id[0],
                                              transaction_cus_id=transaction_customer_id,
                                              transaction_amt=transaction_amt,
                                              transaction_date=transaction_date)
         except Exception as e:
             print(e)
-            context = {"messages1": e}
-            return render(request, 'main/Sales_Sample.html', {"context": context})
+            context = {}
+            table = {}
+            context.update({"messages1": e})
+            queryset = SalesAndPurchases.objects.filter(type='S').values()
+            for i in queryset:
+                table.update({str(i['transaction_id']): i})
+            return render(request, 'main/Sales_Sample.html', {"context": context, "table": table})
 
         # print(request.POST)
-        return HttpResponse("Successfully Added !")
+        context = {}
+        table = {}
+        context.update({"messages1": "Successfully Added"})
+        queryset = SalesAndPurchases.objects.filter(type='S').values()
+        for i in queryset:
+            table.update({str(i['transaction_id']): i})
+        return render(request, 'main/Sales_Sample.html', {"context": context, "table": table})
 
 
 class BillingView(View):
@@ -166,7 +248,11 @@ class BillingView(View):
     bill_id = ''
 
     def get(self, request):
-        return render(request, "main/Billing_Sample.html")
+        table = {}
+        queryset = SalesAndPurchases.objects.filter(bill_produced=0).values()
+        for i in queryset:
+            table.update({str(i['transaction_id']): i})
+        return render(request, 'main/Billing_Sample.html', {"table": table})
 
     def params_check(self, request):
         try:
@@ -204,12 +290,28 @@ class BillingView(View):
         check = self.params_check(request)
 
         context = {}
-        # Check if the item id and transaction id provided exist in the database
+
+        try:
+            Billing.objects.get(bill_id=self.bill_id)
+            context = {}
+            table = {}
+            queryset = SalesAndPurchases.objects.filter(bill_produced=0).values()
+            for i in queryset:
+                table.update({str(i['transaction_id']): i})
+            context.update({"messages2": "Billing already exists"})
+            return render(request, 'main/Billing_Sample.html', {"context": context, "table": table})
+
+        except Exception as e:
+            print(e)
+            pass
 
         try:
             sales_and_purchase_object = SalesAndPurchases.objects.get(transaction_id=self.transaction_id)
+            if str(sales_and_purchase_object.transaction_date) > self.date or self.date > str(django.utils.timezone.now().date()):
+                context.update({"messages1": "Enter valid date"})
         except Exception as e1:
             context.update({"messages1": "Err: {}".format(e1)})
+
         try:
             inventory_object = Inventory.objects.get(item_id=self.item_id)
         except Exception as e2:
@@ -217,18 +319,30 @@ class BillingView(View):
 
         if context:
             print(context)
-            return render(request, 'main/Billing_Sample.html', {"context": context})
+            table = {}
+            queryset = SalesAndPurchases.objects.filter(bill_produced=0).values()
+            for i in queryset:
+                table.update({str(i['transaction_id']): i})
+            return render(request, 'main/Billing_Sample.html', {"context": context, "table": table})
 
         if Billing.objects.filter(transaction_id=sales_and_purchase_object):
             context.update({"messages1": "Err: {}".format("Cannot generate duplicate bills.")})
-            return render(request, 'main/Billing_Sample.html', {"context": context})
+            table = {}
+            queryset = SalesAndPurchases.objects.filter(bill_produced=0).values()
+            for i in queryset:
+                table.update({str(i['transaction_id']): i})
+            return render(request, 'main/Billing_Sample.html', {"context": context, "table": table})
 
         sales_and_purchase_instance = inventory_object.item_id
         print("Instance has ", len(str(sales_and_purchase_instance)))
         print("Actual has ", len(sales_and_purchase_object.item_id.item_id))
         if sales_and_purchase_instance != sales_and_purchase_object.item_id.item_id:
             context.update({"messages1": "Given Item Id is not related to the Transaction specified"})
-            return render(request, 'main/Billing_Sample.html', {"context": context})
+            table = {}
+            queryset = SalesAndPurchases.objects.filter(bill_produced=0).values()
+            for i in queryset:
+                table.update({str(i['transaction_id']): i})
+            return render(request, 'main/Billing_Sample.html', {"context": context, "table": table})
 
         type = sales_and_purchase_object.type
         context = {}
@@ -256,14 +370,23 @@ class BillingView(View):
                     bill_produced=1
                 )
                 context.update({"messages1": "Bill Generated for Purchase object and Inventory updated"})
-                return render(request, 'main/Billing_Sample.html', {"context": context})
+                table = {}
+                queryset = SalesAndPurchases.objects.filter(bill_produced=0).values()
+                for i in queryset:
+                    table.update({str(i['transaction_id']): i})
+                return render(request, 'main/Billing_Sample.html', {"context": context, "table": table})
             else:
+
                 Billing.objects.create(bill_id=self.bill_id, item_id=inventory_object,
                                        transaction_id=sales_and_purchase_object,
                                        bill_total=bill_total,
-                                       bill_status="Rejected")
-                context.update({"messages1": "Bill Generated for Rejected Purchase object and Inventory updated"})
-                return render(request, 'main/Billing_Sample.html', {"context": context})
+                                       bill_status="Rejected(User Rejected)")
+                context.update({"messages1": "Bill Generated for Rejected Purchase object"})
+                table = {}
+                queryset = SalesAndPurchases.objects.filter(bill_produced=0).values()
+                for i in queryset:
+                    table.update({str(i['transaction_id']): i})
+                return render(request, 'main/Billing_Sample.html', {"context": context, "table": table})
 
         elif type == 'S':
 
@@ -283,13 +406,29 @@ class BillingView(View):
                         bill_produced=1
                     )
                     context.update({"messages1": "Successfully Created Bill(Over Demand)"})
+                    table = {}
+                    queryset = SalesAndPurchases.objects.filter(bill_produced=0).values()
+                    for i in queryset:
+                        table.update({str(i['transaction_id']): i})
+                    return render(request, 'main/Billing_Sample.html', {"context": context, "table": table})
                 elif self.choice == 'Rejected':
 
                     Billing.objects.create(bill_id=self.bill_id, item_id=inventory_object,
                                            transaction_id=sales_and_purchase_object,
                                            bill_total=bill_total,
                                            bill_status="Rejected(User Rejected)")
+
+                    SalesAndPurchases.objects.filter(
+                        transaction_id=sales_and_purchase_object.transaction_id,
+                    ).update(
+                        bill_produced=1
+                    )
                     context.update({"messages1": "Successfully Created Bill(User Rejected)"})
+                    table = {}
+                    queryset = SalesAndPurchases.objects.filter(bill_produced=0).values()
+                    for i in queryset:
+                        table.update({str(i['transaction_id']): i})
+                    return render(request, 'main/Billing_Sample.html', {"context": context, "table": table})
                 else:
 
                     Billing.objects.create(bill_id=self.bill_id, item_id=inventory_object,
@@ -309,10 +448,14 @@ class BillingView(View):
                         bill_produced=1
                     )
                     context.update({"messages1": "Successfully Created Bill with Accepted status"})
+
+                    table = {}
+                    queryset = SalesAndPurchases.objects.filter(bill_produced=0).values()
+                    for i in queryset:
+                        table.update({str(i['transaction_id']): i})
+                    return render(request, 'main/Billing_Sample.html', {"context": context, "table": table})
             except Exception as e:
                 context.update({"messages1": e})
-
-            return render(request, 'main/Billing_Sample.html', {"context": context})
 
 
 class InventoryEditByAdmin(View):
@@ -341,11 +484,41 @@ class InventoryTableView(View):
 
 class BillingTableView(View):
     def get(self, request):
-        pass
+        queryset = Billing.objects.all().values()
+        context = {}
+        for i in queryset:
+            context.update({str(i['bill_id']): i})
+        print(context)
+        return render(request, 'main/Billing_Table_View.html', {"context": context})
 
 
+class EmployeeAddView(View):
+
+    def get(self, request):
+        form = CustomUserForm()
+        return render(request, "main/employee.html", {"form": form})
+
+    def post(self, request):
+        form = CustomUserForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            context = {}
+            context.update({"messages1": "Successfully saved user details"})
+            return render(request, "main/employee.html", {"form": form, "context": context})
+
+        else:
+            return render_to_response("main/employee.html", {"form": form})
 
 
-
+class EmployeeTableView(View):
+    def get(self, request):
+        queryset = CustomUser.objects.all().values()
+        print(queryset)
+        context = {}
+        for i in queryset:
+            context.update({str(i['user_id']): i})
+        # print(context)
+        return render(request, 'main/Employee_Table.html', {"context": context})
 
 

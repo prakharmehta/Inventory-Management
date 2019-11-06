@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>Employee table</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="/static/css/page1.css">
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -20,7 +20,7 @@
     <br>
 
     <div align="center">
-    <h1 class="display-4">Sales and Purchases Table</h1>
+    <h1 class="display-4">User Table</h1>
     </div>
         <hr class="my-4">
     <br>
@@ -31,49 +31,45 @@
     <table class="table table-borderless table-dark table-hover" border="2" cellpadding="20">
         <tr>
             <th scope="col">
-                Transaction_Id
+                User_Id
             </th>
             <th scope="col">
-                Type
+                User_Name
             </th>
             <th scope="col">
-                Item_Id
+                User_Mobile
             </th>
             <th scope="col">
-                Transaction_Customer_Id
+                Email
             </th>
             <th scope="col">
-                Transaction_Amount
+                Date of Birth
             </th>
             <th scope="col">
-                Transaction_Date
+                Sex
             </th>
             <th scope="col">
-                Bill_Produced
+                Address
             </th>
 
         </tr>
         {% for i, j in context.items %}
          <tr align="center">
-
             <th scope="row">{{i}}</th>
-             <td>{{j.type}}</td>
-             <td>{{j.item_id_id}}</td>
-             <td>{{j.transaction_cus_id}}</td>
-             <td>{{j.transaction_amt}}</td>
-             <td>{{j.transaction_date}}</td>
-             <td>{{j.bill_produced}}</td>
-             <td><form action="/sample/" method="post">
-                 <input type="hidden" name="primary_key" value={{i}} >
-                 <button class="btn btn-primary" value="submit">Edit</button>
-             </form></td>
+             <td>{{j.user_name}}</td>
+             <td>{{j.user_mobile}}</td>
+             <td>{{j.user_email}}</td>
+             <td>{{j.dob}}</td>
+             <td>{{j.sex}}</td>
+             <td>{{j.user_address}}</td>
          </tr>
         {%endfor%}
     </table>
-    <a class="btn btn-primary" href="#" role="button">Back</a>
+    <a class="btn btn-primary" href="/adminPage/" role="button">Back</a>
     </div>
     </div>
     </div>
+
 
 </body>
 </html>

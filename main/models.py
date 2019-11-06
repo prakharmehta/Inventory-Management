@@ -19,17 +19,17 @@ def random_string(length=8):
 
 
 class CustomUser(models.Model):
-    user_id = models.CharField(max_length=10, primary_key=True, default=random_string(10))
-    user_mobile = models.CharField(max_length=15)
-    user_address = models.CharField(max_length=50)
+    user_id = models.CharField(max_length=10, primary_key=True, default=random_string(10), blank=False)
     user_name = models.CharField(max_length=20)
+    user_mobile = models.CharField(max_length=15)
     dob = models.DateField()
     sex = models.CharField(max_length=1, choices=GENDER_CHOICES)
     user_email = models.EmailField()
+    user_address = models.CharField(max_length=50)
 
 
 class Role(models.Model):
-    role_id = models.CharField(max_length=10, primary_key=True, default=random_string(10))
+    role_id = models.CharField(max_length=10, primary_key=True, default=random_string(10), blank=False)
     role_name = models.CharField(max_length=10,
                                  null=False)
     role_desc = models.CharField(max_length=30, null=True)
@@ -39,7 +39,7 @@ class Role(models.Model):
 
 
 class Login(models.Model):
-    login_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE, default=random_string(10))
+    login_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE, default=random_string(10), blank=False)
     login_role_id = models.CharField(max_length=20, choices=ROLES)
     login_username = models.CharField(max_length=15)
     login_password = models.CharField(max_length=32)
@@ -57,7 +57,7 @@ class Permission(models.Model):
 
 
 class Inventory(models.Model):
-    item_id = models.CharField(max_length=10, primary_key=True, default=random_string(10))
+    item_id = models.CharField(max_length=10, primary_key=True, default=random_string(10), blank=False)
     item_amount = models.IntegerField()
     item_sale_cost = models.FloatField()
     item_pur_cost = models.FloatField()
@@ -72,7 +72,7 @@ class Inventory(models.Model):
 
 
 class SalesAndPurchases(models.Model):
-    transaction_id = models.CharField(max_length=10, primary_key=True, default=random_string(10))
+    transaction_id = models.CharField(max_length=10, primary_key=True, default=random_string(10), blank=False)
     type = models.CharField(max_length=1, choices=TRANSACTIONS)
     item_id = models.ForeignKey(Inventory, on_delete=models.CASCADE)
     transaction_cus_id = models.CharField(max_length=15)  # Check if blank is also to be allowed
@@ -88,7 +88,7 @@ class SalesAndPurchases(models.Model):
 
 
 class Billing(models.Model):
-    bill_id = models.CharField(max_length=10, primary_key=True, default=random_string(10))
+    bill_id = models.CharField(max_length=10, primary_key=True, default=random_string(10), blank=False)
     item_id = models.ForeignKey(Inventory, on_delete=models.CASCADE)
     transaction_id = models.ForeignKey(SalesAndPurchases, on_delete=models.CASCADE)
     bill_total = models.FloatField()
@@ -100,6 +100,4 @@ class Billing(models.Model):
 
     class Meta:
         verbose_name_plural = "Billings"
-
-
 

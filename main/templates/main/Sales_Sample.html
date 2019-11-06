@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
 </head>
     <body>
+
       <style media="screen">
         .jumbotron{
           text-align: center;
@@ -25,12 +26,15 @@
         }
       </style>
       <div class="jumbotron">
+          <div align="center">
+    <h1 class="display-4">Sales</h1>
+    </div>
     <form action="/sample3/" method="POST">
         {% csrf_token %}
 
 <hr class="my-4">
       <br>
-<!--        <label class="lead">Transaction Id</label>             <input type="text" required name="tid"><br><br>-->
+        <label class="lead">Sale Id</label>             <input type="text" required name="Sales_id"><br><br>
 <!--        <label class="lead">Type </label>                      <input type="text" required name="type"><br><br>-->
         <label class="lead">Item Id </label>                   <input type="text" required name="item_id"><br><br>
         <label class="lead">Sales Customer Id</label>    <input type="text" required name="pur_cus_id"><br><br>
@@ -38,12 +42,14 @@
         <label class="lead">Sales Date</label>           <input type="text" required name="pur_date"><br><br>
 <!--        <label class="lead">Bill Produced </label>             <input type="text" required name="bill"><br><br>-->
         <button class="btn btn-primary" type="submit" value="submit">Submit</button><br><br>
-        <a class="btn btn-info" href="/sample?type=S" role="button">View</a>
+<!--        <a class="btn btn-info" href="/sample?type=S" role="button">View</a>-->
 
     </form>
            <p>
             <div style="color:red">
         {{context.messages1}}
+          {{context.messages2}}
+          {{context.messages3}}
                  </div>
         </p>
     </div>
@@ -70,6 +76,9 @@
             <th scope="col">
                 Bill_Produced
             </th>
+            <th scope="col">
+                Change
+            </th>
 
         </tr>
         {% for i, j in table.items %}
@@ -81,6 +90,7 @@
              <td>{{j.transaction_amt}}</td>
              <td>{{j.transaction_date}}</td>
              <td>{{j.bill_produced}}</td>
+
          </tr>
         {%endfor%}
     </table>
