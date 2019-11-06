@@ -13,5 +13,6 @@ urlpatterns = [
     path('inventoryTable/', views.InventoryTableView.as_view()),
     path('billingTable/', views.BillingTableView.as_view()),
     path('employee/', csrf_exempt(views.EmployeeAddView.as_view())),
-    path('employeeTable/', views.EmployeeTableView.as_view()),
+    path('employeeTable/', csrf_exempt(views.EmployeeTableView.as_view())),
+    path('adminPage/', views.SuperAdminPage.as_view()),
 ]

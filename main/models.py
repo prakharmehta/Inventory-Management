@@ -7,19 +7,19 @@ from django.db import models
 import uuid
 
 GENDER_CHOICES = (('M', 'Male'), ('F', 'Female'), ('O', 'Others'))
-ROLES = (('B', 'Billing'), ('P', 'Purchases'), ('S', 'Sales'))
+ROLES = (('B', 'Billing'), ('P', 'Purchases'), ('S', 'Sales'), ('A', 'SuperAdmin'))
 # Sales and Purchases can be merged - Done
 TRANSACTIONS = (('S', 'Sales'), ('P', 'Purchases'))
 
 
-def random_string(length=8):
+def random_string(length=10):
     """Generate a random string of fixed length """
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(length))
 
 
 class CustomUser(models.Model):
-    user_id = models.CharField(max_length=10, primary_key=True, default=random_string(10), blank=False)
+    user_id = models.CharField(max_length=10, primary_key=True, default=random_string, blank=False)
     user_name = models.CharField(max_length=20)
     user_mobile = models.CharField(max_length=15)
     dob = models.DateField()
@@ -29,7 +29,7 @@ class CustomUser(models.Model):
 
 
 class Role(models.Model):
-    role_id = models.CharField(max_length=10, primary_key=True, default=random_string(10), blank=False)
+    role_id = models.CharField(max_length=10, primary_key=True, default=random_string, blank=False)
     role_name = models.CharField(max_length=10,
                                  null=False)
     role_desc = models.CharField(max_length=30, null=True)
@@ -39,7 +39,7 @@ class Role(models.Model):
 
 
 class Login(models.Model):
-    login_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE, default=random_string(10), blank=False)
+    login_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE, default=random_string, blank=False)
     login_role_id = models.CharField(max_length=20, choices=ROLES)
     login_username = models.CharField(max_length=15)
     login_password = models.CharField(max_length=32)
@@ -57,7 +57,7 @@ class Permission(models.Model):
 
 
 class Inventory(models.Model):
-    item_id = models.CharField(max_length=10, primary_key=True, default=random_string(10), blank=False)
+    item_id = models.CharField(max_length=10, primary_key=True, default=random_string, blank=False)
     item_amount = models.IntegerField()
     item_sale_cost = models.FloatField()
     item_pur_cost = models.FloatField()
@@ -72,7 +72,7 @@ class Inventory(models.Model):
 
 
 class SalesAndPurchases(models.Model):
-    transaction_id = models.CharField(max_length=10, primary_key=True, default=random_string(10), blank=False)
+    transaction_id = models.CharField(max_length=10, primary_key=True, default=random_string, blank=False)
     type = models.CharField(max_length=1, choices=TRANSACTIONS)
     item_id = models.ForeignKey(Inventory, on_delete=models.CASCADE)
     transaction_cus_id = models.CharField(max_length=15)  # Check if blank is also to be allowed
@@ -88,11 +88,11 @@ class SalesAndPurchases(models.Model):
 
 
 class Billing(models.Model):
-    bill_id = models.CharField(max_length=10, primary_key=True, default=random_string(10), blank=False)
+    bill_id = models.CharField(max_length=10, primary_key=True, default=random_string, blank=False)
     item_id = models.ForeignKey(Inventory, on_delete=models.CASCADE)
     transaction_id = models.ForeignKey(SalesAndPurchases, on_delete=models.CASCADE)
     bill_total = models.FloatField()
-    bill_date = models.DateField(auto_now_add=True)
+    bill_date = models.DateField(default=django.utils.timezone.now)
     bill_status = models.CharField(max_length=30, null=True)
 
     def __str__(self):

@@ -1,8 +1,8 @@
 import datetime
 
 import django
-from django.shortcuts import render, render_to_response
-from django.http import HttpResponse
+from django.shortcuts import render, render_to_response, redirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from .tables import InventoryTable
 from .forms import InventoryForm, CustomUserForm
@@ -22,7 +22,15 @@ class Home(View):
         print(user_check)
         if user_check:
             if user_check[0].login_password == password:
-                return HttpResponse("Verified Successfully")
+                role = user_check[0].login_role_id
+                if role == "A":
+                    return redirect("/adminPage/")
+                elif role == "B":
+                    return redirect("/billing/")
+                elif role == "S":
+                    return redirect("/sample3/")
+                elif role == "P":
+                    return redirect("/sample2/")
             else:
                 return HttpResponse("Wrong password for the given username")
         else:
@@ -515,10 +523,43 @@ class EmployeeTableView(View):
     def get(self, request):
         queryset = CustomUser.objects.all().values()
         print(queryset)
-        context = {}
+        table = {}
         for i in queryset:
-            context.update({str(i['user_id']): i})
+            table.update({str(i['user_id']): i})
         # print(context)
-        return render(request, 'main/Employee_Table.html', {"context": context})
+        return render(request, 'main/Employee_Table.html', {"table": table})
+
+    def post(self, request):
+        user_id = request.POST['primary_key']
+        employee_instance = CustomUser.objects.all()
+        garbage_object = employee_instance.filter(user_id=user_id)
+        context = {}
+        table = {}
+        employee_instance_values = employee_instance.values()
+        for i in employee_instance_values:
+            table.update({str(i['user_id']): i})
+        print(context)
+        if garbage_object:
+            garbage_object.delete()
+            employee_instance = CustomUser.objects.all()
+            employee_instance_values = employee_instance.values()
+            table = {}
+            for i in employee_instance_values:
+                table.update({str(i['user_id']): i})
+            context.update({"messages1": "Successfully Deleted!"})
+            return render(request, "main/Employee_Table.html", {"table": table, "context": context})
+        else:
+            employee_instance = CustomUser.objects.all()
+            employee_instance_values = employee_instance.values()
+            table = {}
+            for i in employee_instance_values:
+                table.update({str(i['user_id']): i})
+            context.update({"messages1": "Already deleted!"})
+            return render(request, "main/Employee_Table.html", {"table": table, "context": context})
+
+
+class SuperAdminPage(View):
+    def get(self, request):
+        return render(request, "main/admin_page.html")
 
 
