@@ -1,0 +1,64 @@
+<html>
+<head>
+    <title>Billing Table Updater</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/static/css/page1.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
+</head>
+    <body>
+      <style media="screen">
+        .jumbotron{
+          text-align: center;
+        }
+        input{
+          border-radius: 10px;
+          border-style: solid;
+          border-color: silver;
+          border-width: 1px;
+
+        }
+        .btn{
+          border-radius: 10px;
+        }
+      </style>
+      <div class="jumbotron">
+
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <div align="center">
+    <form class="container" action="/billing/" method="post">
+        {% csrf_token %}
+        <label for="bill_id">Bill ID</label>
+    <input class="box" type="text" name="bill_id"><br><br>
+    <label for="trans_id">Transaction ID</label>
+    <input class="box" type="text" name="trans_id"><br><br>
+    <label for="item_id">Item ID</label>
+    <input class="box" type="text" name="item_id"><br><br>
+    <label for="date">Date</label>
+    <input class="box" type="date" name="date"><br><br>
+        <pre><label for="choice">Rejected</label>  <input type="checkbox" name="choice" value="True">Yes<pre>   (Please leave it blank to keep it on default for no)</pre><br></pre>
+    <p class="lead">
+      <input class="btn btn-primary" type="submit" value="Submit">
+    </p>
+
+    <p class="lead">
+      <a class="btn btn-info" href="#" role="button">View</a>
+    </p>
+
+        <div style="color:red">
+        {{context.messages}}<br>
+        {{context.messages1 }}<br>
+        {{context.messages2}}<br>
+            {{context.messages3}}
+        </div>
+  </form>
+        </div>
+      </div>
+</body>
+</html>

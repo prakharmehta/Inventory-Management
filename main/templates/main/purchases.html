@@ -29,9 +29,10 @@
     <div class="jumbotron">
   <h1 class="display-4">Purchases</h1>
   <hr class="my-4">
-  <!-- <form class="container" action="index.html" method="POST"> -->
+<!--  <form class="container" action="/purchases/" method="POST">-->
+    {% csrf_token %}
     <label class="lead" for="pid">Purchase ID</label>
-    <input class="box" id="pid" type="text" name="pur_id" value="" required pattern="[PR|SL][0-9][0-9][0-9]"><br><br>
+    <input class="box" id="pid" type="text" name="pur_id" value="" required><br><br>
     <label for="iid" class="lead">Item ID</label>
     <input id="iid" class="box" name="item_id"><br><br>
     <label for="pcid" class="lead">Customer ID</label>
@@ -42,7 +43,7 @@
     <input id="pdate" class="box" type="date" name="pur_date" value=""><br><br>
 
     <p class="lead">
-      <input class="btn btn-primary" type="submit" value="Submit">
+      <input onclick="alert('Successfully Added to database.');" class="btn btn-primary" type="submit" value="Submit">
     </p>
     <p class="lead">
       <a id = "view" class="btn btn-info" href="#" role="button">View</a>

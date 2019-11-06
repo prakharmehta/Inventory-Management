@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework_mongoengine',
     'rest_framework',
     'main',
+    "django_tables2",
 ]
 
 MIDDLEWARE = [
@@ -78,35 +79,24 @@ TEMPLATES = [
 WSGI_APPLICATION = 'inventory_management.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': 'DBMS_Inventory_Management',
-#         'HOST': 'mongodb+srv://abhishek:Abh@2000@dbms-vfjqp.mongodb.net/test?retryWrites=true&w=majority',
+#         'ENGINE': 'djongo',  # Django + Mongodb engine
+#         'NAME': 'Inventory_Management',  # Name of the database table
+#         'HOST': "mongodb+srv://%s:%s@%s" % (quote_plus('abhishek'), quote_plus('Abh@2000'), quote_plus('dbms-vfjqp.mongodb.net')),
+#         # URI broken up and joined with quote_plus due to RFC 2396 policy i.e. some special symbils like @, ? cannot be passed in
+#         # Username and Password without encoding
 #         'USER': 'abhishek',
 #         'PASSWORD': 'Abh@2000',
-#     }
+#     },
 # }
 
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'DBMS_Inventory_Management',
-        #'HOST': 'mongodb+srv://abhishek:Abh@2000@dbms-vfjqp.mongodb.net/test?retryWrites=true&w=majority',
-        'HOST': "mongodb+srv://%s:%s@%s" % (quote_plus('abhishek'), quote_plus('Abh@2000'), quote_plus('dbms-vfjqp.mongodb.net')),
-        'USER': 'abhishek',
-        'PASSWORD': 'Abh@2000',
-    },
+        'NAME': 'DBMS',
+    }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': 'DBMS_Inventory_Management',
-#     }}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

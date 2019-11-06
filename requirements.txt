@@ -2,6 +2,7 @@ dataclasses==0.6
 Django==2.2.6
 django-mongodb-engine==0.6.0
 django-rest-framework-mongoengine==3.4.0
+django-tables2==2.1.1
 djangorestframework==3.10.3
 djangotoolbox==1.8.0
 djongo==1.2.36

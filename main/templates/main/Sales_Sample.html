@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Purchase Updater</title>
+    <title>Sales Table Updater</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/static/css/page1.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -25,7 +25,7 @@
         }
       </style>
       <div class="jumbotron">
-    <form action="/sample2/" method="POST">
+    <form action="/sample3/" method="POST">
         {% csrf_token %}
 
 <hr class="my-4">
@@ -33,15 +33,21 @@
 <!--        <label class="lead">Transaction Id</label>             <input type="text" required name="tid"><br><br>-->
 <!--        <label class="lead">Type </label>                      <input type="text" required name="type"><br><br>-->
         <label class="lead">Item Id </label>                   <input type="text" required name="item_id"><br><br>
-        <label class="lead">Purchase Customer Id</label>    <input type="text" required name="pur_cus_id"><br><br>
-        <label class="lead">Purchase Amount </label>         <input type="text" required name="pur_amt"><br><br>
-        <label class="lead">Purchase Date</label>           <input type="text" required name="pur_date"><br><br>
+        <label class="lead">Sales Customer Id</label>    <input type="text" required name="pur_cus_id"><br><br>
+        <label class="lead">Sales Amount </label>         <input type="text" required name="pur_amt"><br><br>
+        <label class="lead">Sales Date</label>           <input type="text" required name="pur_date"><br><br>
 <!--        <label class="lead">Bill Produced </label>             <input type="text" required name="bill"><br><br>-->
         <button class="btn btn-primary" type="submit" value="submit">Submit</button><br><br>
-        <a class="btn btn-info" href="/sample?type=P" role="button">View</a>
+        <a class="btn btn-info" href="/sample?type=S" role="button">View</a>
 
     </form>
-          <table class="table table-borderless table-dark table-hover" border="2" cellpadding="20">
+           <p>
+            <div style="color:red">
+        {{context.messages1}}
+                 </div>
+        </p>
+    </div>
+    <table class="table table-borderless table-dark table-hover" border="2" cellpadding="20">
         <tr>
             <th scope="col">
                 Transaction_Id
@@ -78,6 +84,5 @@
          </tr>
         {%endfor%}
     </table>
-    </div>
 </body>
 </html>

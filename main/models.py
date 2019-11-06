@@ -1,16 +1,26 @@
-from django.db import models
+import datetime
+import random
+import string
 
+import django
 from django.db import models
 import uuid
 
 GENDER_CHOICES = (('M', 'Male'), ('F', 'Female'), ('O', 'Others'))
 ROLES = (('B', 'Billing'), ('P', 'Purchases'), ('S', 'Sales'))
+# Sales and Purchases can be merged - Done
+TRANSACTIONS = (('S', 'Sales'), ('P', 'Purchases'))
+
+
+def random_string(length=8):
+    """Generate a random string of fixed length """
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(length))
 
 
 class CustomUser(models.Model):
-    user_id = models.UUIDField(default=uuid.uuid4, primary_key=True)
-    user_mobile = models.CharField(
-        max_length=15)  # Need to set it as charfield because postgres has some issues with large integers
+    user_id = models.CharField(max_length=10, primary_key=True, default=random_string(10))
+    user_mobile = models.CharField(max_length=15)
     user_address = models.CharField(max_length=50)
     user_name = models.CharField(max_length=20)
     dob = models.DateField()
@@ -18,67 +28,78 @@ class CustomUser(models.Model):
     user_email = models.EmailField()
 
 
-class Roles(models.Model):
-    role_id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+class Role(models.Model):
+    role_id = models.CharField(max_length=10, primary_key=True, default=random_string(10))
     role_name = models.CharField(max_length=10,
-                                 null=False)  # Null = False by default by can put it this way for sir to show all the constraints
+                                 null=False)
     role_desc = models.CharField(max_length=30, null=True)
+
+    class Meta:
+        verbose_name_plural = "Roles"
 
 
 class Login(models.Model):
-    login_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    login_role_id = models.CharField(max_length=20, choices=ROLES)  # Check if required to be converted to a number
+    login_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE, default=random_string(10))
+    login_role_id = models.CharField(max_length=20, choices=ROLES)
     login_username = models.CharField(max_length=15)
-    login_password = models.CharField(max_length=32)  # Add check for min_length in views.add
+    login_password = models.CharField(max_length=32)
+
+    class Meta:
+        verbose_name_plural = "Login"
 
 
 class Permission(models.Model):
     per_id = models.CharField(max_length=20)
     per_role_id = models.OneToOneField(Login,
-                                       on_delete=models.CASCADE)  # Check if this field is suppose to be left blank
+                                       on_delete=models.CASCADE)
     per_name = models.CharField(max_length=20)
     per_module = models.CharField(max_length=20)
 
 
 class Inventory(models.Model):
-    item_id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    item_id = models.CharField(max_length=10, primary_key=True, default=random_string(10))
     item_amount = models.IntegerField()
     item_sale_cost = models.FloatField()
     item_pur_cost = models.FloatField()
-    last_update = models.DateTimeField()
+    last_update = models.DateField()
     item_description = models.CharField(max_length=30, blank=True)
 
     def __str__(self):
         return str(self.item_id)
 
-
-# Sales and Purchases can be merged
-TRANSACTIONS = (('S', 'Sales'), ('P', 'Purchases'))
+    class Meta:
+        verbose_name_plural = "Inventories"
 
 
 class SalesAndPurchases(models.Model):
-    transaction_id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    transaction_id = models.CharField(max_length=10, primary_key=True, default=random_string(10))
     type = models.CharField(max_length=1, choices=TRANSACTIONS)
     item_id = models.ForeignKey(Inventory, on_delete=models.CASCADE)
     transaction_cus_id = models.CharField(max_length=15)  # Check if blank is also to be allowed
-    transaction_amt = models.FloatField()
-    transaction_date = models.DateField(auto_now_add=True)
+    transaction_amt = models.IntegerField()
+    transaction_date = models.DateField(default=django.utils.timezone.now)
     bill_produced = models.BooleanField(default=0)  # Converted this to a boolean field
 
     def __str__(self):
         return str(self.transaction_id)
 
+    class Meta:
+        verbose_name_plural = "Sales And Purchases"
+
 
 class Billing(models.Model):
-    bill_id = models.UUIDField(default=uuid.uuid4, primary_key=True)
-    item_id = models.ForeignKey(Inventory, on_delete=models.CASCADE)  # Put it asap - This is the Inventory table
-    transaction_id = models.ForeignKey(SalesAndPurchases, on_delete=models.CASCADE)  # Need to make this also right
+    bill_id = models.CharField(max_length=10, primary_key=True, default=random_string(10))
+    item_id = models.ForeignKey(Inventory, on_delete=models.CASCADE)
+    transaction_id = models.ForeignKey(SalesAndPurchases, on_delete=models.CASCADE)
     bill_total = models.FloatField()
     bill_date = models.DateField(auto_now_add=True)
-    bill_status = models.CharField(max_length=30, default="Pending")
+    bill_status = models.CharField(max_length=30, null=True)
 
     def __str__(self):
         return str(self.bill_id)
+
+    class Meta:
+        verbose_name_plural = "Billings"
 
 
 
