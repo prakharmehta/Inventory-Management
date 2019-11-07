@@ -407,6 +407,13 @@ class BillingView(View):
                                        transaction_id=sales_and_purchase_object,
                                        bill_total=bill_total,
                                        bill_status="Rejected(User Rejected)")
+
+                SalesAndPurchases.objects.filter(
+                    transaction_id=sales_and_purchase_object.transaction_id,
+                ).update(
+                    bill_produced=1
+                )
+
                 context.update({"messages1": "Bill Generated for Rejected Purchase object"})
                 table = {}
                 queryset = SalesAndPurchases.objects.filter(bill_produced=0).values()
