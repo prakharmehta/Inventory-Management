@@ -20,7 +20,7 @@
     <br>
 
     <div align="center">
-    <h1 class="display-4">Sales and Purchases Table</h1>
+    <h1 class="display-4">Billing Table</h1>
     </div>
         <hr class="my-4">
     <br>
@@ -31,45 +31,34 @@
     <table class="table table-borderless table-dark table-hover" border="2" cellpadding="20">
         <tr>
             <th scope="col">
-                Transaction_Id
-            </th>
-            <th scope="col">
-                Type
+                Bill_Id
             </th>
             <th scope="col">
                 Item_Id
             </th>
             <th scope="col">
-                Transaction_Customer_Id
+                Transaction_Id
             </th>
             <th scope="col">
-                Transaction_Amount
+                Bill_Total
             </th>
             <th scope="col">
-                Transaction_Date
+                Bill_Date
             </th>
             <th scope="col">
-                Bill_Produced
+                Bill_Status
             </th>
-<!--            <th scope="col">-->
-<!--                Delete-->
-<!--            </th>-->
+
 
         </tr>
         {% for i, j in context.items %}
          <tr align="center">
-
             <th scope="row">{{i}}</th>
-             <td>{{j.type}}</td>
              <td>{{j.item_id_id}}</td>
-             <td>{{j.transaction_cus_id}}</td>
-             <td>{{j.transaction_amt}}</td>
-             <td>{{j.transaction_date}}</td>
-             <td>{{j.bill_produced}}</td>
-<!--             <td><form action="/sample/" method="post">-->
-<!--                 <input type="hidden" name="primary_key" value={{i}}>-->
-<!--                 <button class="btn btn-primary" value="submit">Edit</button>-->
-<!--             </form></td>-->
+             <td>{{j.transaction_id_id}}</td>
+             <td>{{j.bill_total}}</td>
+             <td>{{j.bill_date}}</td>
+             <td>{{j.bill_status}}</td>
          </tr>
         {%endfor%}
     </table>
@@ -77,6 +66,7 @@
     </div>
     </div>
     </div>
+
 
 </body>
 </html>

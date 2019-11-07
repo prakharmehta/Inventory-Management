@@ -21,19 +21,31 @@
           </div>
     <div class="form-group">
       <center>
-      <input type="username" class="form-control" id="Username" placeholder="Username", name="username">
+      <input type="username" class="form-control" id="Username" placeholder="Username" required name="username">
       </center>
       </div>
 
  <div class="form-group">
    <center>
-      <input type="password" class="form-control" id="Password" placeholder="Password" name="password">
+      <input type="password" class="form-control" id="Password" placeholder="Password" required name="password">
       </center>
 </div>
 <center>
 <button type="submit" id="lg" class="btn btn-primary" value="Submit">Let's Go</button></div>
 </center>
   </form>
-
+<a>
+    <div style="text-align: center">
+  <div style="font-weight: bold; color: red" >
+    {{context.messages1}}
+      {{context.messages2}}
+      {{context.messages3}}
+      <br>
+      <br>
+      <br>
+      <br>
+  </div>
+        </div>
+</a>
   </body>
 </html>

@@ -17,11 +17,59 @@
 <br>
 <br>
 <div align="center">
-{% load django_tables2 %}
-{% render_table table %}
+    <div align="center">
+    <table class="table table-borderless table-dark table-hover" border="2" cellpadding="20">
+        <tr>
+            <th scope="col">
+                Item_ID
+            </th>
+            <th scope="col">
+                Item_Amount
+            </th>
+            <th scope="col">
+                Item_Sale_Cost
+            </th>
+            <th scope="col">
+                Item_Pur_Cost
+            </th>
+            <th scope="col">
+                Last_Update
+            </th>
+            <th scope="col">
+                Item_Description
+            </th>
+
+
+        </tr>
+        {% for i, j in table.items %}
+         <tr align="center">
+            <th scope="row">{{i}}</th>
+             <td>{{j.item_amount}}</td>
+             <td>{{j.item_sale_cost}}</td>
+             <td>{{j.item_pur_cost}}</td>
+             <td>{{j.last_update}}</td>
+             <td>{{j.item_description}}</td>
+             <td><form action="/inventoryTable/" method="post">
+                 <input type="hidden" name="primary_key" value={{i}} >
+                 <button class="btn btn-danger" value="submit">Delete</button>
+             </form></td>
+         </tr>
+        {%endfor%}
+    </table>
+    </div>
+
     <br><br>
 <p class="lead">
-<a class="btn btn-info" href="/inventory/" role="button">Go Back</a>
+<a class="btn btn-info" href="/inventory/" role="button">Inventory Form</a>
+    <a class="btn btn-primary" href="/adminPage/" role="button">Back to Admin</a>
+
+    <p>
+            <div style="color: red">
+        {{context.messages1}}
+        {{context.messages2}}
+        {{context.messages3}}
+        </div>
+        </p>
 </p>
     </div>
 </div>

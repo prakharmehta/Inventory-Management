@@ -41,7 +41,10 @@
         <label class="lead">Purchase Amount </label>         <input type="text" required name="pur_amt"><br><br>
         <label class="lead">Purchase Date</label>           <input type="text" required name="pur_date"><br><br>
 <!--        <label class="lead">Bill Produced </label>             <input type="text" required name="bill"><br><br>-->
+        <p class="lead">
         <button class="btn btn-primary" type="submit" value="submit">Submit</button><br><br>
+        <a class="btn btn-primary" href="/" role="button">Sign Out</a>
+            </p>
 <!--        <a class="btn btn-info" href="/sample?type=P" role="button">View</a>-->
     <p>
             <div style="color:red">
@@ -76,6 +79,7 @@
             </th>
 
         </tr>
+
         {% for i, j in table.items %}
          <tr align="center">
             <th scope="row">{{i}}</th>

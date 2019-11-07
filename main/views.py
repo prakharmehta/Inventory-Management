@@ -10,19 +10,29 @@ from .models import CustomUser, Login, SalesAndPurchases, Inventory, Billing
 
 
 class Home(View):
-
+    """Defines the Landing Page when the home screen Loads up"""
     def get(self, request):
         return render(request, 'main/LandingPage.html')
 
     def post(self, request):
         print(request.POST)
+        """Handling the username and password"""
         username = request.POST['username']
         password = request.POST['password']
+        """First check for existence of username in login"""
         user_check = Login.objects.filter(login_username=username)
         print(user_check)
         if user_check:
+            """If username exists, then check for password entered"""
             if user_check[0].login_password == password:
                 role = user_check[0].login_role_id
+                """Redirecting users to different pages by depending on roles"""
+                """
+                A- Admin
+                B- Billing
+                S- Sales
+                P- Purchase
+                """
                 if role == "A":
                     return redirect("/adminPage/")
                 elif role == "B":
@@ -32,9 +42,14 @@ class Home(View):
                 elif role == "P":
                     return redirect("/sample2/")
             else:
-                return HttpResponse("Wrong password for the given username")
+                """In case wrong password entered"""
+                context = {"messages1": "Wrong set of username and password"}
+                return render(request, 'main/LandingPage.html', {"context": context})
+
         else:
-            return HttpResponse("User doesnt exist!")
+            """In case user id doesnt exist"""
+            context = {"messages1": "User id does not exist"}
+            return render(request, 'main/LandingPage.html', {"context": context})
 
 
 class SalesAndPurchasesTablePage(View):
@@ -223,7 +238,7 @@ class Sample3(View):
 
         try:
 
-            SalesAndPurchases.objects.create(transaction_id= transaction_id, type=type,
+            SalesAndPurchases.objects.create(transaction_id=transaction_id, type=type,
                                              item_id=item_id[0],
                                              transaction_cus_id=transaction_customer_id,
                                              transaction_amt=transaction_amt,
@@ -291,7 +306,10 @@ class BillingView(View):
             return render(request, 'main/Billing_Sample.html', {"context": context})
 
     def bill(self, inventory_object, sales_and_purchase_object):
-        return inventory_object.item_pur_cost * sales_and_purchase_object.transaction_amt
+        if sales_and_purchase_object.type == "S":
+            return inventory_object.item_sale_cost * sales_and_purchase_object.transaction_amt
+        else:
+            return inventory_object.item_pur_cost * sales_and_purchase_object.transaction_amt
 
     def post(self, request):
         # Making checks to make sure user enters all fields
@@ -315,7 +333,7 @@ class BillingView(View):
 
         try:
             sales_and_purchase_object = SalesAndPurchases.objects.get(transaction_id=self.transaction_id)
-            if str(sales_and_purchase_object.transaction_date) > self.date or self.date > str(django.utils.timezone.now().date()):
+            if self.date > str(django.utils.timezone.now().date()):
                 context.update({"messages1": "Enter valid date"})
         except Exception as e1:
             context.update({"messages1": "Err: {}".format(e1)})
@@ -486,8 +504,42 @@ class InventoryEditByAdmin(View):
 
 class InventoryTableView(View):
     def get(self, request):
-        table = InventoryTable(Inventory.objects.all())
-        return render(request, "main/Inventory_Table.html", {"table": table})
+        queryset = Inventory.objects.all().values()
+        table = {}
+        for i in queryset:
+            table.update({str(i['item_id']): i})
+        print(table)
+        return render(request, 'main/Inventory_Table.html', {"table": table})
+
+    def post(self, request):
+        item_id = request.POST['primary_key']
+        inventory_instance = Inventory.objects.all()
+        garbage_object = inventory_instance.filter(item_id=item_id)
+        context = {}
+        table = {}
+        inventory_instance_values = inventory_instance.values()
+        for i in inventory_instance_values:
+            table.update({str(i['item_id']): i})
+        print(context)
+        if garbage_object:
+            garbage_object.delete()
+            inventory_instance = Inventory.objects.all()
+            inventory_instance_values = inventory_instance.values()
+            context = {}
+            table = {}
+            for i in inventory_instance_values:
+                table.update({str(i['item_id']): i})
+            context.update({"messages1": "Successfully Deleted!"})
+            return render(request, "main/Inventory_Table.html", {"table": table, "context": context})
+        else:
+            inventory_instance = Inventory.objects.all()
+            inventory_instance_values = inventory_instance.values()
+            context = {}
+            table = {}
+            for i in inventory_instance_values:
+                table.update({str(i['item_id']): i})
+            context.update({"messages1": "Already deleted!"})
+            return render(request, "main/Inventory_Table.html", {"table": table, "context": context})
 
 
 class BillingTableView(View):
@@ -563,3 +615,11 @@ class SuperAdminPage(View):
         return render(request, "main/admin_page.html")
 
 
+class BillingTableViewForAdmin(View):
+    def get(self, request):
+        queryset = Billing.objects.all().values()
+        context = {}
+        for i in queryset:
+            context.update({str(i['bill_id']): i})
+        print(context)
+        return render(request, 'main/Billing_Table_for_Admin.html', {"context": context})
